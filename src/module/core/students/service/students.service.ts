@@ -10,6 +10,10 @@ export class StudentsService {
     return prisma.student.findUnique({ where: { id } });
   }
 
+  async findByRa(ra: string) {
+    return prisma.student.findUnique({ where: { ra } });
+  }
+
   async create(data: IStudent) {
     return prisma.student.create({ data });
   }
