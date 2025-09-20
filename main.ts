@@ -1,20 +1,17 @@
 import express from "express";
-import { StudentsController } from "./src/module/core/students/controller/students.controller";
-import { StudentsService } from "./src/module/core/students/service/students.service";
+import { errorMiddleware } from "./src/shared/middleware/error.middleware";
+import { studentsRoutes } from "./src/module/core/students/routes/studentsRoutes.routes";
 
 const app = express();
 const port = 3000;
 
-// Student Module Setup
-const studentsService = new StudentsService();
-const studentsController = new StudentsController(studentsService);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Student Routes
-app.get("/users", (req, res) => studentsController.findAll(req, res));
-app.get("/users/:id", (req, res) => studentsController.findById(req, res));
-app.post("/users", (req, res) => studentsController.create(req, res));
-app.put("/users/:id", (req, res) => studentsController.update(req, res));
-app.delete("/users/:id", (req, res) => studentsController.delete(req, res));
+// Module Routes
+studentsRoutes(app);
+
+app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

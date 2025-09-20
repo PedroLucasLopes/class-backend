@@ -1,70 +1,100 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentsService } from "../service/students.service";
 import { IGetStudent } from "../model/getstudent.model";
+import { IStudent } from "../model/poststudent.model";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { logger } from "../../../../shared/log/_logger";
+import { UniqueConstraintError } from "../exception/unique-ra.exception";
+import { InternalErrorException } from "../exception/internal-error.exception";
 
 export class StudentsController {
   constructor(private studentsService: StudentsService) {}
 
-  // GET /users
-  async findAll(req: Request, res: Response) {
+  // GET /students
+  async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const users: IGetStudent[] = await this.studentsService.findAll();
-      return res.json(users);
+      logger.info("Fetching all students");
+      const students: IGetStudent[] = await this.studentsService.findAll();
+      return res.json(students);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+      logger.error("Error to fetch students data", { error: err });
+      throw next(new InternalErrorException("Internal server error"));
     }
   }
 
-  // GET /users/:id
-  async findById(req: Request, res: Response) {
+  // GET /students/:id
+  async findById(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
-      const user = await this.studentsService.findById(id);
-      if (user) {
-        return res.json(user);
+      logger.info("Fetching student by ID", { studentId: id });
+      const student: IGetStudent = await this.studentsService.findById(id);
+      if (student) {
+        return res.json(student);
       }
       return res.status(404).json({ message: "User not found" });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+      logger.error("Error to fetch student data by ID", { error: err });
+      throw next(new InternalErrorException("Internal server error"));
     }
   }
 
-  // POST /users
-  async create(req: Request, res: Response) {
-    const data = req.body;
+  // GET /students/ra/:ra
+  async findByRa(req: Request, res: Response, next: NextFunction) {
+    const { ra } = req.params;
     try {
-      const newUser = await this.studentsService.create(data);
+      logger.info("Fetching student by RA", { studentRa: ra });
+      const student: IGetStudent = await this.studentsService.findByRa(ra);
+      if (student) {
+        return res.status(200).json(student);
+      }
+      return res.status(404).json({ message: "User not found" });
+    } catch (err) {
+      logger.error("Error to fetch student data by RA", { error: err });
+      throw next(new InternalErrorException("Internal server error"));
+    }
+  }
+
+  // POST /students
+  async create(req: Request, res: Response, next: NextFunction) {
+    const data: IStudent = req.body;
+    try {
+      logger.info("Creating a new student", { student: data });
+      const newUser: IStudent = await this.studentsService.create(data);
+
       return res.status(201).json(newUser);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+      logger.error("Error to create a new student", { error: err });
+      if (err instanceof PrismaClientKnownRequestError) {
+        throw next(new UniqueConstraintError("RA is already in use"));
+      }
+      throw next(new InternalErrorException("Internal server error"));
     }
   }
 
-  // PUT /users/:id
-  async update(req: Request, res: Response) {
+  // PUT /students/:id
+  async update(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const data = req.body;
+    const data: IGetStudent = req.body;
     try {
-      const updatedUser = await this.studentsService.update(id, data);
+      logger.info("Updating student data", { studentId: id, updateData: data });
+      const updatedUser = await this.studentsService.update(id, { ...data });
       return res.json(updatedUser);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+      logger.error("Error to update student data", { error: err });
+      throw next(new InternalErrorException("Internal server error"));
     }
   }
 
-  // DELETE /users/:id
-  async delete(req: Request, res: Response) {
+  // DELETE /students/:id
+  async delete(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     try {
+      logger.info("Deleting student", { studentId: id });
       await this.studentsService.delete(id);
       return res.status(204).send();
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: "Internal server error" });
+      logger.error("Error to delete student", { error: err });
+      throw next(new InternalErrorException("Internal server error"));
     }
   }
 }
