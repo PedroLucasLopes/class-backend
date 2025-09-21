@@ -2,10 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { StudentsService } from "../service/students.service";
 import { IGetStudent } from "../model/getstudent.model";
 import { IStudent } from "../model/poststudent.model";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { logger } from "../../../../shared/log/_logger";
-import { UniqueConstraintError } from "../exception/unique-ra.exception";
-import { InternalErrorException } from "../exception/internal-error.exception";
+import { ExceptionHandler } from "../utils/exception-handler";
+import { IUpdateStudent } from "../model/updatestudent.model";
+import { BadRequestException } from "../exception/bad-request.exception";
+import { NotFoundException } from "../exception/not-found.exception";
 
 export class StudentsController {
   constructor(private studentsService: StudentsService) {}
@@ -18,7 +19,8 @@ export class StudentsController {
       return res.json(students);
     } catch (err) {
       logger.error("Error to fetch students data", { error: err });
-      throw next(new InternalErrorException("Internal server error"));
+      console.log(err);
+      throw next(ExceptionHandler(err));
     }
   }
 
@@ -31,10 +33,10 @@ export class StudentsController {
       if (student) {
         return res.json(student);
       }
-      return res.status(404).json({ message: "User not found" });
+      return next(new NotFoundException("User not found"));
     } catch (err) {
       logger.error("Error to fetch student data by ID", { error: err });
-      throw next(new InternalErrorException("Internal server error"));
+      throw next(ExceptionHandler(err));
     }
   }
 
@@ -47,10 +49,10 @@ export class StudentsController {
       if (student) {
         return res.status(200).json(student);
       }
-      return res.status(404).json({ message: "User not found" });
+      return next(new NotFoundException("User not found"));
     } catch (err) {
       logger.error("Error to fetch student data by RA", { error: err });
-      throw next(new InternalErrorException("Internal server error"));
+      throw next(ExceptionHandler(err));
     }
   }
 
@@ -64,10 +66,7 @@ export class StudentsController {
       return res.status(201).json(newUser);
     } catch (err) {
       logger.error("Error to create a new student", { error: err });
-      if (err instanceof PrismaClientKnownRequestError) {
-        throw next(new UniqueConstraintError("RA is already in use"));
-      }
-      throw next(new InternalErrorException("Internal server error"));
+      throw next(ExceptionHandler(err));
     }
   }
 
@@ -76,12 +75,18 @@ export class StudentsController {
     const { id } = req.params;
     const data: IGetStudent = req.body;
     try {
+      const { ra, cpf, ...updatableData } = data;
       logger.info("Updating student data", { studentId: id, updateData: data });
-      const updatedUser = await this.studentsService.update(id, { ...data });
+      if (req.body.ra || req.body.cpf) {
+        return next(
+          new BadRequestException("RA and CPF fields cannot be updated")
+        );
+      }
+      const updatedUser = await this.studentsService.update(id, updatableData);
       return res.json(updatedUser);
     } catch (err) {
       logger.error("Error to update student data", { error: err });
-      throw next(new InternalErrorException("Internal server error"));
+      throw next(ExceptionHandler(err));
     }
   }
 
@@ -94,7 +99,7 @@ export class StudentsController {
       return res.status(204).send();
     } catch (err) {
       logger.error("Error to delete student", { error: err });
-      throw next(new InternalErrorException("Internal server error"));
+      throw next(ExceptionHandler(err));
     }
   }
 }
