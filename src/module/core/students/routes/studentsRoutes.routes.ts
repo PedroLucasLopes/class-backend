@@ -13,6 +13,9 @@ export const studentsRoutes = (app) => {
   app.get("/students/:id", (req, res, next) =>
     studentsController.findById(req, res, next)
   );
+  app.get("/students/ra/:ra", (req, res, next) =>
+    studentsController.findByRa(req, res, next)
+  );
   app.post("/students", (req, res, next) =>
     studentsController.create(req, res, next)
   );
