@@ -3,10 +3,18 @@ import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence
 import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils";
 import { IStudent } from "../model/poststudent.model";
 import { IUpdateStudent } from "../model/updatestudent.model";
+import { orderEnum } from "../model/pagination.model";
 
 export class StudentsService {
-  async findAll() {
-    return prisma.student.findMany();
+  async findAll(page?: number, limit?: number, orderBy?: orderEnum) {
+    const paginationRegister = Number(limit) || 10;
+    const paginationInterval =
+      ((Number(page) || 1) - 1) * (Number(limit) || 10);
+    return prisma.student.findMany({
+      take: paginationRegister,
+      skip: paginationInterval,
+      orderBy: { createdAt: orderBy || "desc" },
+    });
   }
 
   async findById(id: string) {
