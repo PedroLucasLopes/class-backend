@@ -13,11 +13,17 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.5.2",
     "prisma": "^6.16.2",
     "ts-node": "^10.9.2",

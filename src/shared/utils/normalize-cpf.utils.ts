@@ -1,5 +1,5 @@
 import { NextFunction } from "express";
-import { BadRequestException } from "../../module/core/students/exception/bad-request.exception";
+import { BadRequestException } from "../exception/bad-request.exception";
 
 export const normalizeCpf = (cpf: string, next: NextFunction) => {
   const same_number = new RegExp(cpf[0].repeat(11));

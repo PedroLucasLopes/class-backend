@@ -3,14 +3,14 @@ import { StudentsService } from "../service/students.service";
 import { IGetStudent } from "../model/getstudent.model";
 import { IStudent } from "../model/poststudent.model";
 import { logger } from "../../../../shared/log/_logger";
-import { ExceptionHandler } from "../utils/exception-handler";
-import { BadRequestException } from "../exception/bad-request.exception";
-import { NotFoundException } from "../exception/not-found.exception";
+import { ExceptionHandler } from "../../../../shared/utils/exception-handler";
+import { BadRequestException } from "../../../../shared/exception/bad-request.exception";
+import { NotFoundException } from "../../../../shared/exception/not-found.exception";
 import {
   orderEnum,
   PaginatedResponse,
   Pagination,
-} from "../model/pagination.model";
+} from "../../../../shared/model/pagination.model";
 import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
 import { StatusCode } from "../../../../shared/exception/http-exception.exception";
 

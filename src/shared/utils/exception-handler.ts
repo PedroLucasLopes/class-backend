@@ -9,7 +9,7 @@ export const ExceptionHandler = (err: any) => {
 
     P2025: () => new BadRequestException(`Record not found`),
 
-    P2000: () => new BadRequestException(`cpf exceeds the maximum length`),
+    P2000: () => new BadRequestException(`field exceeds the maximum length`),
 
     PrismaClientValidationError: () =>
       new BadRequestException(`The field is missing or invalid`),

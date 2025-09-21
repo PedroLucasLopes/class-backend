@@ -3,7 +3,7 @@ import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence
 import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils";
 import { IStudent } from "../model/poststudent.model";
 import { IUpdateStudent } from "../model/updatestudent.model";
-import { orderEnum } from "../model/pagination.model";
+import { orderEnum } from "../../../../shared/model/pagination.model";
 
 export class StudentsService {
   async findAll(page?: number, limit?: number, orderBy?: orderEnum) {
