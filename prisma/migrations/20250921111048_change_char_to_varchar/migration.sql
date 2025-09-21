@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Student" ALTER COLUMN "cpf" SET DATA TYPE VARCHAR(11);

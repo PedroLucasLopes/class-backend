@@ -12,7 +12,7 @@ model Student {
   name      String
   email     String
   ra        String   @unique
-  cpf       String
+  cpf       String   @db.VarChar(11)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -4,7 +4,6 @@ import { IGetStudent } from "../model/getstudent.model";
 import { IStudent } from "../model/poststudent.model";
 import { logger } from "../../../../shared/log/_logger";
 import { ExceptionHandler } from "../utils/exception-handler";
-import { IUpdateStudent } from "../model/updatestudent.model";
 import { BadRequestException } from "../exception/bad-request.exception";
 import { NotFoundException } from "../exception/not-found.exception";
 
@@ -61,8 +60,7 @@ export class StudentsController {
     const data: IStudent = req.body;
     try {
       logger.info("Creating a new student", { student: data });
-      const newUser: IStudent = await this.studentsService.create(data);
-
+      const newUser: IStudent = await this.studentsService.create(data, next);
       return res.status(201).json(newUser);
     } catch (err) {
       logger.error("Error to create a new student", { error: err });
