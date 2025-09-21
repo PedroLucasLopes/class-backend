@@ -1,4 +1,4 @@
-import { HttpException, StatusCode } from "./http-exception.exception";
+import { HttpException, StatusCode } from "./http-exception.exception.js";
 
 class UniqueConstraintException extends HttpException {
   constructor(message: string) {

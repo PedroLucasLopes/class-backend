@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../../../../shared/log/_logger";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
+import { logger } from "../../../../shared/log/_logger.js";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
 import {
   orderEnum,
   PaginatedResponse,
-} from "../../../../shared/model/pagination.model";
-import { StatusCode } from "../../../../shared/exception/http-exception.exception";
-import { ExceptionHandler } from "../../../../shared/utils/exception-handler";
-import { NotFoundException } from "../../../../shared/exception/not-found.exception";
-import { UsersService } from "../service/users.service";
-import { IGetUser } from "../model/getuser.model";
-import { IUser } from "../model/postuser.model";
-import { IUpdateUser } from "../model/updateuser.model";
+} from "../../../../shared/model/pagination.model.js";
+import { StatusCode } from "../../../../shared/exception/http-exception.exception.js";
+import { ExceptionHandler } from "../../../../shared/utils/exception-handler.js";
+import { NotFoundException } from "../../../../shared/exception/not-found.exception.js";
+import { UsersService } from "../service/users.service.js";
+import { IGetUser } from "../model/getuser.model.js";
+import { IUser } from "../model/postuser.model.js";
+import { IUpdateUser } from "../model/updateuser.model.js";
 
 export class UsersController {
   constructor(private usersService: UsersService) {}
@@ -30,10 +30,6 @@ export class UsersController {
         prisma.user.count(),
         this.usersService.findAll(page - 1, limit, order),
       ]);
-
-      if (!users.length) {
-        return next(new NotFoundException("No users found"));
-      }
 
       const response: PaginatedResponse<IGetUser> = {
         data: users,
@@ -65,33 +61,6 @@ export class UsersController {
       return next(new NotFoundException("User not found"));
     } catch (err) {
       logger.error("Error to fetch user data by ID", { error: err });
-      throw next(ExceptionHandler(err));
-    }
-  }
-
-  // POST /users
-  async create(req: Request, res: Response, next: NextFunction) {
-    const data: IUser = req.body;
-    try {
-      logger.info("Creating a new user", { user: data });
-      const newUser: IUser = await this.usersService.create(data);
-      return res.status(StatusCode.CREATED).json(newUser);
-    } catch (err) {
-      logger.error("Error to create a new user", { error: err });
-      throw next(ExceptionHandler(err));
-    }
-  }
-
-  // PUT /users/:id
-  async update(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    const data: IUpdateUser = req.body;
-    try {
-      logger.info("Updating user data", { userId: id, updateData: data });
-      const updatedUser = await this.usersService.update(id, { ...data });
-      return res.json(updatedUser);
-    } catch (err) {
-      logger.error("Error to update user data", { error: err });
       throw next(ExceptionHandler(err));
     }
   }

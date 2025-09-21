@@ -1,5 +1,5 @@
-import { StudentsController } from "../controller/students.controller";
-import { StudentsService } from "../service/students.service";
+import { StudentsController } from "../controller/students.controller.js";
+import { StudentsService } from "../service/students.service.js";
 
 export const studentsRoutes = (app) => {
   // Student Module Setup
