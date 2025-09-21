@@ -61,7 +61,6 @@ export class StudentsController {
     try {
       logger.info("Creating a new student", { student: data });
       const newUser: IStudent = await this.studentsService.create(data, next);
-
       return res.status(201).json(newUser);
     } catch (err) {
       logger.error("Error to create a new student", { error: err });
