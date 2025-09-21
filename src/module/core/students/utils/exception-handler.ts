@@ -9,6 +9,8 @@ export const ExceptionHandler = (err: any) => {
 
     P2025: () => new BadRequestException(`Record not found`),
 
+    P2000: () => new BadRequestException(`The field is too long`),
+
     PrismaClientValidationError: () =>
       new BadRequestException(`The field is missing or invalid`),
   };
