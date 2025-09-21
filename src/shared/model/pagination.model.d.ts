@@ -1,4 +1,4 @@
-import { IGetStudent } from "./getstudent.model";
+import { IGetStudent } from "../../module/core/students/model/getstudent.model";
 
 export interface Pagination {
   page?: number;

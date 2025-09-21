@@ -1,7 +1,4 @@
-import {
-  HttpException,
-  StatusCode,
-} from "../../../../shared/exception/http-exception.exception";
+import { HttpException, StatusCode } from "./http-exception.exception";
 
 class UniqueConstraintException extends HttpException {
   constructor(message: string) {
