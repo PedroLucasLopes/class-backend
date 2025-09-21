@@ -6,6 +6,13 @@ import { logger } from "../../../../shared/log/_logger";
 import { ExceptionHandler } from "../utils/exception-handler";
 import { BadRequestException } from "../exception/bad-request.exception";
 import { NotFoundException } from "../exception/not-found.exception";
+import {
+  orderEnum,
+  PaginatedResponse,
+  Pagination,
+} from "../model/pagination.model";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
+import { StatusCode } from "../../../../shared/exception/http-exception.exception";
 
 export class StudentsController {
   constructor(private studentsService: StudentsService) {}
@@ -13,9 +20,33 @@ export class StudentsController {
   // GET /students
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
+      const page = Math.max(Number(req.query.page) || 1, 1);
+      const limit = Math.max(Number(req.query.limit) || 10, 1);
+      const order = req.query.order as orderEnum;
+
       logger.info("Fetching all students");
-      const students: IGetStudent[] = await this.studentsService.findAll();
-      return res.json(students);
+      logger.info("Checking total students");
+
+      const [studentsCount, students] = await Promise.all([
+        prisma.student.count(),
+        this.studentsService.findAll(page - 1, limit, order),
+      ]);
+
+      if (!students.length) {
+        return next(new NotFoundException("No students found"));
+      }
+
+      const response: PaginatedResponse<IGetStudent> = {
+        data: students,
+        pagination: {
+          page,
+          limit,
+          totalItems: studentsCount,
+          totalPages: Math.ceil(studentsCount / limit),
+        },
+      };
+
+      return res.status(StatusCode.SUCCESS).json(response);
     } catch (err) {
       logger.error("Error to fetch students data", { error: err });
       console.log(err);
@@ -46,7 +77,7 @@ export class StudentsController {
       logger.info("Fetching student by RA", { studentRa: ra });
       const student: IGetStudent = await this.studentsService.findByRa(ra);
       if (student) {
-        return res.status(200).json(student);
+        return res.status(StatusCode.SUCCESS).json(student);
       }
       return next(new NotFoundException("User not found"));
     } catch (err) {
@@ -61,7 +92,7 @@ export class StudentsController {
     try {
       logger.info("Creating a new student", { student: data });
       const newUser: IStudent = await this.studentsService.create(data, next);
-      return res.status(201).json(newUser);
+      return res.status(StatusCode.CREATED).json(newUser);
     } catch (err) {
       logger.error("Error to create a new student", { error: err });
       throw next(ExceptionHandler(err));
@@ -94,7 +125,7 @@ export class StudentsController {
     try {
       logger.info("Deleting student", { studentId: id });
       await this.studentsService.delete(id);
-      return res.status(204).send();
+      return res.status(StatusCode.NO_CONTENT).send();
     } catch (err) {
       logger.error("Error to delete student", { error: err });
       throw next(ExceptionHandler(err));
