@@ -1,8 +1,8 @@
 import { NextFunction } from "express";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
-import { orderEnum } from "../../../../shared/model/pagination.model";
-import { IUser } from "../model/postuser.model";
-import { IUpdateUser } from "../model/updateuser.model";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
+import { orderEnum } from "../../../../shared/model/pagination.model.js";
+import { IUser } from "../model/postuser.model.js";
+import { IUpdateUser } from "../model/updateuser.model.js";
 
 export class UsersService {
   async findAll(page?: number, limit?: number, orderBy?: orderEnum) {
@@ -18,14 +18,6 @@ export class UsersService {
 
   async findById(id: string) {
     return prisma.user.findUnique({ where: { id } });
-  }
-
-  async create(data: IUser) {
-    return prisma.user.create({ data });
-  }
-
-  async update(id: string, data: IUpdateUser) {
-    return prisma.user.update({ where: { id }, data });
   }
 
   async delete(id: string) {

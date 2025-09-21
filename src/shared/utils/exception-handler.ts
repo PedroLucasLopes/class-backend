@@ -1,6 +1,6 @@
-import { InternalErrorException } from "../exception/internal-error.exception";
-import { BadRequestException } from "../exception/bad-request.exception";
-import { UniqueConstraintException } from "../exception/unique-constraint.exception";
+import { InternalErrorException } from "../exception/internal-error.exception.js";
+import { BadRequestException } from "../exception/bad-request.exception.js";
+import { UniqueConstraintException } from "../exception/unique-constraint.exception.js";
 
 export const ExceptionHandler = (err: any) => {
   const errors: Record<string, () => Error> = {

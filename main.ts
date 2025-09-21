@@ -1,12 +1,16 @@
 import express from "express";
-import { errorMiddleware } from "./src/shared/middleware/error.middleware";
-import { studentsRoutes } from "./src/module/core/students/routes/studentsRoutes.routes";
+import { errorMiddleware } from "./src/shared/middleware/error.middleware.js";
+import { studentsRoutes } from "./src/module/core/students/routes/studentsRoutes.routes.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { authRoutes } from "./src/shared/auth/routes/authRoutes.routes";
-import { usersRoutes } from "./src/module/core/users/routes/users.routes";
+import { authRoutes } from "./src/shared/auth/routes/authRoutes.routes.js";
+import { usersRoutes } from "./src/module/core/users/routes/users.routes.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
+const router = express.Router();
 const port = 3000;
 
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
@@ -15,11 +19,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Module Routes
-studentsRoutes(app);
-usersRoutes(app);
+studentsRoutes(router);
+usersRoutes(router);
 
 // Authentication Routes
-app.use("/api/auth", authRoutes);
+authRoutes(router);
+
+app.use("/api", router);
 
 app.use(errorMiddleware);
 

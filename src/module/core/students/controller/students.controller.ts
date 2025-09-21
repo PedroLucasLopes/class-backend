@@ -1,18 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { StudentsService } from "../service/students.service";
-import { IGetStudent } from "../model/getstudent.model";
-import { IStudent } from "../model/poststudent.model";
-import { logger } from "../../../../shared/log/_logger";
-import { ExceptionHandler } from "../../../../shared/utils/exception-handler";
-import { BadRequestException } from "../../../../shared/exception/bad-request.exception";
-import { NotFoundException } from "../../../../shared/exception/not-found.exception";
+import { StudentsService } from "../service/students.service.js";
+import { IGetStudent } from "../model/getstudent.model.js";
+import { IStudent } from "../model/poststudent.model.js";
+import { logger } from "../../../../shared/log/_logger.js";
+import { ExceptionHandler } from "../../../../shared/utils/exception-handler.js";
+import { BadRequestException } from "../../../../shared/exception/bad-request.exception.js";
+import { NotFoundException } from "../../../../shared/exception/not-found.exception.js";
 import {
   orderEnum,
   PaginatedResponse,
   Pagination,
-} from "../../../../shared/model/pagination.model";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
-import { StatusCode } from "../../../../shared/exception/http-exception.exception";
+} from "../../../../shared/model/pagination.model.js";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
+import { StatusCode } from "../../../../shared/exception/http-exception.exception.js";
 
 export class StudentsController {
   constructor(private studentsService: StudentsService) {}
