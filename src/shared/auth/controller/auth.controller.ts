@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthService } from "../service/auth.service.js";
-import { ExceptionHandler } from "../../utils/exception-handler.js";
-import { AuthPayload } from "../../model/auth.model.js";
-import { StatusCode } from "../../exception/http-exception.exception.js";
-import { logger } from "../../log/_logger.js";
-import { ILogin } from "../../model/login.model.js";
-import { BadRequestException } from "../../exception/bad-request.exception.js";
+import { AuthService } from "../service/auth.service";
+import { ExceptionHandler } from "../../utils/exception-handler";
+import { AuthPayload } from "../../model/auth.model";
+import { StatusCode } from "../../exception/http-exception.exception";
+import { logger } from "../../log/_logger";
+import { ILogin } from "../../model/login.model";
+import { BadRequestException } from "../../exception/bad-request.exception";
 
 export class AuthController {
   constructor(private authService: AuthService) {}

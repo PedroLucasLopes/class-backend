@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthController } from "../controller/auth.controller.js";
-import { AuthService } from "../service/auth.service.js";
-import { requireAuth } from "../../middleware/auth.middleware.js";
-import { StatusCode } from "../../exception/http-exception.exception.js";
+import { AuthController } from "../controller/auth.controller";
+import { AuthService } from "../service/auth.service";
+import { requireAuth } from "../../middleware/auth.middleware";
+import { StatusCode } from "../../exception/http-exception.exception";
 
 export const authRoutes = (app) => {
   // Auth Shared Setup

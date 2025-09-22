@@ -1,6 +1,6 @@
-import { requireAuth } from "../../../../shared/middleware/auth.middleware.js";
-import { StudentsController } from "../controller/students.controller.js";
-import { StudentsService } from "../service/students.service.js";
+import { requireAuth } from "../../../../shared/middleware/auth.middleware";
+import { StudentsController } from "../controller/students.controller";
+import { StudentsService } from "../service/students.service";
 
 export const studentsRoutes = (app) => {
   // Student Module Setup

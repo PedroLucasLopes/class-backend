@@ -1,6 +1,6 @@
-import { requireAuth } from "../../../../shared/middleware/auth.middleware.js";
-import { UsersController } from "../controller/users.controller.js";
-import { UsersService } from "../service/users.service.js";
+import { requireAuth } from "../../../../shared/middleware/auth.middleware";
+import { UsersController } from "../controller/users.controller";
+import { UsersService } from "../service/users.service";
 
 export const usersRoutes = (app) => {
   // User Module Setup

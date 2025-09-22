@@ -1,15 +1,15 @@
 import express from "express";
-import { errorMiddleware } from "./src/shared/middleware/error.middleware.js";
-import { studentsRoutes } from "./src/module/core/students/routes/studentsRoutes.routes.js";
+import { errorMiddleware } from "./src/shared/middleware/error.middleware";
+import { studentsRoutes } from "./src/module/core/students/routes/studentsRoutes.routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { authRoutes } from "./src/shared/auth/routes/authRoutes.routes.js";
-import { usersRoutes } from "./src/module/core/users/routes/users.routes.js";
+import { authRoutes } from "./src/shared/auth/routes/authRoutes.routes";
+import { usersRoutes } from "./src/module/core/users/routes/users.routes";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const router = express.Router();
 const port = 3000;
 
