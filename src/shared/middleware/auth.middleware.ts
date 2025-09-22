@@ -1,8 +1,8 @@
 import { NextFunction } from "express";
-import { AuthRequest } from "../model/authrequest.model.js";
-import { UnauthorizedException } from "../exception/unauthorized.exception.js";
-import { verifyAccessToken } from "../utils/token.utils.js";
-import { logger } from "../log/_logger.js";
+import { AuthRequest } from "../model/authrequest.model";
+import { UnauthorizedException } from "../exception/unauthorized.exception";
+import { verifyAccessToken } from "../utils/token.utils";
+import { logger } from "../log/_logger";
 
 export const requireAuth = (
   req: AuthRequest,

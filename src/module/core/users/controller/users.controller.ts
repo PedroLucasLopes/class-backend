@@ -1,17 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../../../../shared/log/_logger.js";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
+import { logger } from "../../../../shared/log/_logger";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
 import {
   orderEnum,
   PaginatedResponse,
-} from "../../../../shared/model/pagination.model.js";
-import { StatusCode } from "../../../../shared/exception/http-exception.exception.js";
-import { ExceptionHandler } from "../../../../shared/utils/exception-handler.js";
-import { NotFoundException } from "../../../../shared/exception/not-found.exception.js";
-import { UsersService } from "../service/users.service.js";
-import { IGetUser } from "../model/getuser.model.js";
-import { IUser } from "../model/postuser.model.js";
-import { IUpdateUser } from "../model/updateuser.model.js";
+} from "../../../../shared/model/pagination.model";
+import { StatusCode } from "../../../../shared/exception/http-exception.exception";
+import { ExceptionHandler } from "../../../../shared/utils/exception-handler";
+import { NotFoundException } from "../../../../shared/exception/not-found.exception";
+import { UsersService } from "../service/users.service";
+import { IGetUser } from "../model/getuser.model";
 
 export class UsersController {
   constructor(private usersService: UsersService) {}

@@ -1,8 +1,5 @@
-import { NextFunction } from "express";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
-import { orderEnum } from "../../../../shared/model/pagination.model.js";
-import { IUser } from "../model/postuser.model.js";
-import { IUpdateUser } from "../model/updateuser.model.js";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
+import { orderEnum } from "../../../../shared/model/pagination.model";
 
 export class UsersService {
   async findAll(page?: number, limit?: number, orderBy?: orderEnum) {

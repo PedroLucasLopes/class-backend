@@ -1,16 +1,16 @@
-import { prisma } from "../../persistence/prisma/prisma-persistence.module.js";
+import { prisma } from "../../persistence/prisma/prisma-persistence.module";
 import {
   generateAccessToken,
   generateRefreshToken,
   generateResetToken,
-} from "../../utils/token.utils.js";
-import { comparePassword, hashPassword } from "../../utils/hash.utils.js";
-import { logger } from "../../log/_logger.js";
+} from "../../utils/token.utils";
+import { comparePassword, hashPassword } from "../../utils/hash.utils";
+import { logger } from "../../log/_logger";
 import { NextFunction } from "express";
-import { UnauthorizedException } from "../../exception/unauthorized.exception.js";
-import { verifyRefreshToken } from "../../utils/token.utils.js";
-import { BadRequestException } from "../../exception/bad-request.exception.js";
-import { normalizeEmail } from "../../utils/normalize-email.utils.js";
+import { UnauthorizedException } from "../../exception/unauthorized.exception";
+import { verifyRefreshToken } from "../../utils/token.utils";
+import { BadRequestException } from "../../exception/bad-request.exception";
+import { normalizeEmail } from "../../utils/normalize-email.utils";
 
 export class AuthService {
   async signUp(

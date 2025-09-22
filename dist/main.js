@@ -7,7 +7,7 @@ import { authRoutes } from "./src/shared/auth/routes/authRoutes.routes.js";
 import { usersRoutes } from "./src/module/core/users/routes/users.routes.js";
 import dotenv from "dotenv";
 dotenv.config();
-const app = express();
+export const app = express();
 const router = express.Router();
 const port = 3000;
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));

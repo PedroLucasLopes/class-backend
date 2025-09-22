@@ -1,10 +1,10 @@
 import { NextFunction } from "express";
-import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
-import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils.js";
-import { IStudent } from "../model/poststudent.model.js";
-import { IUpdateStudent } from "../model/updatestudent.model.js";
-import { orderEnum } from "../../../../shared/model/pagination.model.js";
-import { normalizeEmail } from "../../../../shared/utils/normalize-email.utils.js";
+import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module";
+import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils";
+import { IStudent } from "../model/poststudent.model";
+import { IUpdateStudent } from "../model/updatestudent.model";
+import { orderEnum } from "../../../../shared/model/pagination.model";
+import { normalizeEmail } from "../../../../shared/utils/normalize-email.utils";
 
 export class StudentsService {
   async findAll(page?: number, limit?: number, orderBy?: orderEnum) {
