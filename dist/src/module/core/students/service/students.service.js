@@ -1,5 +1,6 @@
 import { prisma } from "../../../../shared/persistence/prisma/prisma-persistence.module.js";
 import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils.js";
+import { normalizeEmail } from "../../../../shared/utils/normalize-email.utils.js";
 export class StudentsService {
     async findAll(page, limit, orderBy) {
         const paginationRegister = Number(limit) || 10;
@@ -17,9 +18,10 @@ export class StudentsService {
         return prisma.student.findUnique({ where: { ra } });
     }
     async create(data, next) {
-        const { cpf, ...rest } = data;
+        const { cpf, email, ...rest } = data;
         normalizeCpf(cpf, next);
-        return prisma.student.create({ data: { cpf, ...rest } });
+        normalizeEmail(email, next);
+        return prisma.student.create({ data: { cpf, email, ...rest } });
     }
     async update(id, data) {
         return prisma.student.update({ where: { id }, data });

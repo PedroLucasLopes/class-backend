@@ -6,7 +6,7 @@ export class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    // POST /api/auth/login
+    // POST /api/login
     async login(req, res, next) {
         try {
             logger.info("Logging in user");
@@ -25,7 +25,7 @@ export class AuthController {
             throw next(ExceptionHandler(err));
         }
     }
-    // POST /api/auth/logout
+    // POST /api/logout
     async logout(req, res, next) {
         try {
             logger.info("Logging out user");
@@ -43,12 +43,12 @@ export class AuthController {
             throw next(ExceptionHandler(err));
         }
     }
-    // POST /api/auth/signup
+    // POST /api/signup
     async signUp(req, res, next) {
         try {
             logger.info("Signing up new user", { body: req.body });
             const { username, email, password } = req.body;
-            const { accessToken, refreshToken } = await this.authService.signUp(username, email, password);
+            const { accessToken, refreshToken } = await this.authService.signUp(username, email, password, next);
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
@@ -62,7 +62,7 @@ export class AuthController {
             throw next(ExceptionHandler(err));
         }
     }
-    // POST /api/auth/forgot-password
+    // PUT /api/forgot-password
     async forgotPassword(req, res, next) {
         try {
             const { email } = req.body;
@@ -78,6 +78,7 @@ export class AuthController {
             throw next(ExceptionHandler(err));
         }
     }
+    // PUT /api/reset-password
     async resetPassword(req, res, next) {
         try {
             const { token, newPassword } = req.body;
@@ -92,7 +93,7 @@ export class AuthController {
             throw next(ExceptionHandler(err));
         }
     }
-    // POST /api/auth/refresh-token
+    // PUT /api/refresh-token
     async refreshToken(req, res, next) {
         try {
             const token = req.cookies.refreshToken;

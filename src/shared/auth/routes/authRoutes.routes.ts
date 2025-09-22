@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthController } from "../controller/auth.controller.js";
 import { AuthService } from "../service/auth.service.js";
+import { requireAuth } from "../../middleware/auth.middleware.js";
+import { StatusCode } from "../../exception/http-exception.exception.js";
 
 export const authRoutes = (app) => {
   // Auth Shared Setup
@@ -30,4 +32,10 @@ export const authRoutes = (app) => {
   app.put("/refresh-token", (req: Request, res: Response, next: NextFunction) =>
     authController.refreshToken(req, res, next)
   );
+
+  app.get("/protected", requireAuth, (req, res) => {
+    res
+      .status(StatusCode.SUCCESS)
+      .json({ message: "You're authenticated as user" });
+  });
 };

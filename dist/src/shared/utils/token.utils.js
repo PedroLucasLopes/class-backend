@@ -13,6 +13,9 @@ export const generateRefreshToken = (userId) => {
 export const verifyRefreshToken = (token) => {
     return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
 };
+export const verifyAccessToken = (token) => {
+    return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+};
 export const generateResetToken = async () => {
     const randomString = Math.random().toString(36).substring(2, 15);
     const token = await bcrypt.hash(randomString, 10);

@@ -5,10 +5,12 @@ import { logger } from "../../log/_logger.js";
 import { UnauthorizedException } from "../../exception/unauthorized.exception.js";
 import { verifyRefreshToken } from "../../utils/token.utils.js";
 import { BadRequestException } from "../../exception/bad-request.exception.js";
+import { normalizeEmail } from "../../utils/normalize-email.utils.js";
 export class AuthService {
-    async signUp(username, email, password) {
+    async signUp(username, email, password, next) {
         logger.info("Creating new user in the database", { username, email });
         const hashed = await hashPassword(password);
+        normalizeEmail(email, next);
         const user = await prisma.user.create({
             data: { username, email, password: hashed },
         });

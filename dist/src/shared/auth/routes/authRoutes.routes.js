@@ -1,5 +1,7 @@
 import { AuthController } from "../controller/auth.controller.js";
 import { AuthService } from "../service/auth.service.js";
+import { requireAuth } from "../../middleware/auth.middleware.js";
+import { StatusCode } from "../../exception/http-exception.exception.js";
 export const authRoutes = (app) => {
     // Auth Shared Setup
     const authService = new AuthService();
@@ -11,4 +13,9 @@ export const authRoutes = (app) => {
     app.put("/forgot-password", (req, res, next) => authController.forgotPassword(req, res, next));
     app.put("/reset-password", (req, res, next) => authController.resetPassword(req, res, next));
     app.put("/refresh-token", (req, res, next) => authController.refreshToken(req, res, next));
+    app.get("/protected", requireAuth, (req, res) => {
+        res
+            .status(StatusCode.SUCCESS)
+            .json({ message: "You're authenticated as user" });
+    });
 };
