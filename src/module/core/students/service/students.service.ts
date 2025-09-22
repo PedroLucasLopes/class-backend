@@ -4,6 +4,7 @@ import { normalizeCpf } from "../../../../shared/utils/normalize-cpf.utils.js";
 import { IStudent } from "../model/poststudent.model.js";
 import { IUpdateStudent } from "../model/updatestudent.model.js";
 import { orderEnum } from "../../../../shared/model/pagination.model.js";
+import { normalizeEmail } from "../../../../shared/utils/normalize-email.utils.js";
 
 export class StudentsService {
   async findAll(page?: number, limit?: number, orderBy?: orderEnum) {
@@ -26,9 +27,10 @@ export class StudentsService {
   }
 
   async create(data: IStudent, next: NextFunction) {
-    const { cpf, ...rest } = data;
+    const { cpf, email, ...rest } = data;
     normalizeCpf(cpf, next);
-    return prisma.student.create({ data: { cpf, ...rest } });
+    normalizeEmail(email, next);
+    return prisma.student.create({ data: { cpf, email, ...rest } });
   }
 
   async update(id: string, data: IUpdateStudent) {
