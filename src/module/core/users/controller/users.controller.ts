@@ -26,7 +26,7 @@ export class UsersController {
 
       const [usersCount, users] = await Promise.all([
         prisma.user.count(),
-        this.usersService.findAll(page - 1, limit, order),
+        this.usersService.findAll(page, limit, order),
       ]);
 
       const response: PaginatedResponse<IGetUser> = {

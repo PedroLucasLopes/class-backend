@@ -21,6 +21,7 @@ export class StudentsController {
     try {
       const page = Math.max(Number(req.query.page) || 1, 1);
       const limit = Math.max(Number(req.query.limit) || 10, 1);
+      const search = req.query.search as string;
       const order = req.query.order as orderEnum;
 
       logger.info("Fetching all students");
@@ -28,7 +29,7 @@ export class StudentsController {
 
       const [studentsCount, students] = await Promise.all([
         prisma.student.count(),
-        this.studentsService.findAll(page - 1, limit, order),
+        this.studentsService.findAll(page - 1, limit, order, search),
       ]);
 
       if (!students.length) {
