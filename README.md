@@ -1,4 +1,4 @@
-# 🧑‍🏫 +A Educação Challenge (Backend)
+# 🧑‍🏫 Class Manager (Backend)
 
 This project is a **Higher Education management system** where administrator users can register and manage the institution's students.
 
